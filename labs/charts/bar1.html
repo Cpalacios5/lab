@@ -1,48 +1,44 @@
 <html>
   <head>
-    <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawStuff);
 
-      // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
-
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
-
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
-
-        // Create the data table.
-        var data = new google.visualization.BarChart();
-        data.addColumn('string', 'Activity');
-        data.addColumn('number', 'Time');
-        data.addRows([
-          ['Snapchat', 2],
+      function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+          ['What I Do', 'Percentage'],
+           ['Snapchat', 2],
           ['School', 5],
           ['Talking', 2],
           ['Homework', 4],
           ['Sleeping', 1.5]
-          
         ]);
-      
+
         var options = {
           title: 'My Day',
-          is3D: true,
-           slices: {  4: {offset: 0.2},
-           }}
-        
-   var chart = new google.visualization.BarChart(document.getElementById('piechart_3d'));
-        chart.draw(data, options);
-     
+          width: 900,
+          legend: { position: 'none' },
+          chart: { subtitle: 'On the daily basis' },
+          axes: {
+            x: {
+              0: { side: 'top', label: ''} // Top x-axis.
+            }
+          },
+          bar: { groupWidth: "90%" }
+        };
+
+      
+      
+
+           
+ var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+        // Convert the Classic options to Material options.
+        chart.draw(data, google.charts.Bar.convertOptions(options));
       }
     </script>
   </head>
-
   <body>
-    <!--Div that will hold the pie chart-->
- <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+    <div id="top_x_div" style="width: 900px; height: 500px;"></div>
   </body>
 </html>
