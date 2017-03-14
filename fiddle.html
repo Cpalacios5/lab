@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ltFiddle 1st period</title>
+        <style>
+            textarea, iframe, button {width:80%; border: solid 2px black;}
+            textarea {font-size: 1.5em;}
+        </style>
+        
+    </head>
+    <body>
+        <button id="run">Run</button><br>
+        <textarea rows=5 id="html" placeholder="Enter your html"  ></textarea>
+        <textarea rows=5  id="css"  placeholder="Enter your css"></textarea>
+        <textarea rows=5  id="javascript"  placeholder="Enter your javascript"></textarea>
+        <br><iframe id="result"></iframe>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+        <script>
+            
+            $( 
+                $("#run").click (
+                    function () {
+                        
+                       $( "#result" ).contents()
+                       .contents()
+                        .find( "body" )
+                        .html($("#html").val() );
+                       
+                       $( "#result" ).contents()
+                        .find( "head" )
+                        .append(   
+                            '<style>' + $("#css").val() + '</style>'
+                        ); 
+                        
+
+                        $( "#result" ).contents()
+                        .find( "body" )
+                        .append(   
+                            '<script>' + $("#javascript").val() + '<' + '/script>'
+                        );   
+                        
+                       console.log ( $("#html").val()  ); 
+                    }                  
+                )
+             
+                
+            )
+                
+                
+                
+                
+                
+                console.log ( $("#html").val()  );
+            
+            
+        </script>
+
+    </body>
+</html>
