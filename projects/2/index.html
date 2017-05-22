@@ -27,6 +27,13 @@
       //http://paletton.com/#uid=13u0C0koSjoDL18WjskevQPevQP
       
     
+    <select id="route"> </select>
+
+   
+    var routeIds =  ["10","34","54","49"];
+    var stopIds= ["2526","12520","12525","17405","17146","12541"];
+    
+    $.each
         $(function() {
          
           var apiPassThruUrl = "https://polar-garden-75406.herokuapp.com/apiPassThru.php";
@@ -42,11 +49,14 @@
                       "key" : "zehKFaJzTxu3NBbF92jLCkJYz",
                       "format": "json",
                       "rt" : "152,49,52,X49,",
-                      "stpid" : "2526,12520,",//"12525,17405","17146,12541","12462,12531","12518,12469",
-                      "direction" : "Westbound,Northbound,Southbound,Eastbound",
+                      "stpid" : "2526,12520,12525,17405,17146,12541,12462,12531,12518,12469,12537,17298,12513,", //,12537,17298,12513,17358,12530,12510,12519,12509,12505,15773,12504,17832,12507",
+                      "direction": "Westbound,Northbound,Southbound,Eastbound",
+              
+                
               }
  
             })
+        
             .done (function (data) {
               console.log(data["bustime-response"]["prd"]);
              
@@ -54,7 +64,7 @@
                   $("#cta").append(
                     "<p>" +
                     "Route #" + 
-                    v.rt + 
+                    v.rt +
                     "<br>" + 
                     "Direction: " + 
                     v.rtdir + 

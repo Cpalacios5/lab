@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+ <head>
+    <!-- Material Design Lite -->
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <!-- Material Design icon font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+  <style>
+    .screen {display:none;}
+  
+  </style>
+    
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+ 
+          <span class="mdl-layout-title">Bus Tracker</span>
+
+          <div class="mdl-layout-spacer"></div>
+ 
+          <nav class="mdl-navigation mdl-layout--large-screen-only">
+            <a class="mdl-navigation__link" href="https://preview.c9users.io/chari182/webdevs2/3page/movies.html">Movies</a>
+            <a class="mdl-navigation__link" href="https://preview.c9users.io/chari182/webdevs2/3page/game.html">Gaming</a>
+            <a class="mdl-navigation__link" href="https://preview.c9users.io/chari182/webdevs2/3page/freedrawing.html">Drawing</a>
+  
+          </nav>
+        </div>
+      </header>
+      <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Bus Tracker</span>
+        <nav class="mdl-navigation">
+          <a id="movies" class="mdl-navigation__link" href="#">Home</a>
+          <a id="watch" class="mdl-navigation__link" href="#">Route</a>
+          <a id="art" class="mdl-navigation__link" href="#">Map</a>
+        </nav>
+      </div>
+      <!--<main class="mdl-layout__content">-->
+      <!--  <div id="screen1" class="screen page-content">Home</div>-->
+      <!--  <div id="screen2" class="screen page-content">Route</div>-->
+      <!--   <div id="screen3" class="screen page-content">Map</div>-->
+      <!--</main>-->
+    
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+      <select id="routes"></select>
+      <select id="directions"></select>
+      <select id ="stops"></select>
+ 
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+      <script >
+        $(function() {
+          
+          
+          var apiPassThruUrl = "https://polar-garden-75406.herokuapp.com/apiPassThru.php";
+          
+      
+          var apiEndpoint = "http://ctabustracker.com/bustime/api/v2/getroutes";
+
+          $.ajax({
+              url: apiPassThruUrl,
+              dataType: "json",
+              method: 'GET',
+              data: {"apiEndpoint": apiEndpoint,
+                      "key" : "THr2377c4BDQNqNCxNvRwyCcd",
+                      "format":"json"}
+            }).done (function (data) {
+             
+
+             $.each(data["bustime-response"]["routes"], function(i,v) {
+                  var option = $("<option>"); 
+                  option.attr("value", v.rt );  
+                  option.text(v.rt + " - " + v.rtnm);  
+                  $("#routes").append(option);  
+              });
+             
+              
+              
+              
+              
+            
+              console.log(data);
+              $("body").append("<h1>Bus Routes</h1>");
+             
+              $.each(data["bustime-response"]["routes"], function(i,v) {
+              //    $("body").append("Route #" + v.rt + ", " + v.rtnm + "<br>");
+                
+              });
+              
+
+            });
+            
+            
+          $("#routes").on("change", function() {
+              var apiEndpoint = "http://ctabustracker.com/bustime/api/v2/getdirections";
+
+            $.ajax({
+                url: apiPassThruUrl,
+                dataType: "json",
+                method: 'GET',
+                data: {"apiEndpoint": apiEndpoint,
+                        "key" : "THr2377c4BDQNqNCxNvRwyCcd",
+                        "format":"json",
+                        "rt": $("#routes").val()
+                }
+              }).done (function (data) {
+  
+               
+               $("#directions option").remove();
+               
+               $.each(data["bustime-response"]["directions"], function(i,v) {
+                    var option = $("<option>");  
+                    option.attr("value", v.dir ); 
+                    option.text(v.dir); 
+                    $("#directions").append(option); 
+                });
+              
+  $("#directions").on("change", function() {
+              var apiEndpoint = "http://ctabustracker.com/bustime/api/v2/getstops";
+
+            $.ajax({
+                url: apiPassThruUrl,
+                dataType: "json",
+                method: 'GET',
+                data: {"apiEndpoint": apiEndpoint,
+                        "key" : "THr2377c4BDQNqNCxNvRwyCcd",
+                        "format":"json",
+                        "rt": $("#routes").val(),
+                        "dir": $("#directions").val()
+                }
+              }).done (function (data) {
+            
+               
+               $("#stops option").remove();
+               
+               $.each(data["bustime-response"]["stops"], function(i,v) {
+                    var option = $("<option>");   
+                    option.attr("value", v.stpid);   
+                    option.text(v.stpnm); 
+                    $("#stops").append(option);  
+                });
+
+            });            
+            
+            
+            
+          });
+          
+    
+              });
+              
+              });
+              
+              });
+                
+            </script>
+            <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+<script>
+            var db = new Dexie('BusTrackerApp');
+
+	db.version(1).stores({
+		stops: 'ttid,rt,rtnm,dir,stpid,stpnm'
+	});
+
+</script>
+  <script>
+    $(function() {
+     $("#screen1").show();
+ 
+  $("#Home").on("click", function(){
+   $(".screen").hide();
+   $("#screen1").show();
+  });
+   
+    $("#Route").on("click", function(){
+   $(".screen").hide();
+   $("#screen2").show();
+  });
+   
+    $("#Map").on("click", function(){
+   $(".screen").hide();
+   $("#screen3").show();
+  });
+   
+   
+    });
+  </script>
+  
+</body>
+</html>
+
+
+
+
